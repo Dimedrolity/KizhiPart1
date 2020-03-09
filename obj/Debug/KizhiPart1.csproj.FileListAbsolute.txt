@@ -1,0 +1,10 @@
+C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\KizhiPart1.exe.config
+C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\KizhiPart1.exe
+C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\KizhiPart1.pdb
+C:\Users\Дима\Downloads\KizhiPart1.csproj\obj\Debug\KizhiPart1.exe
+C:\Users\Дима\Downloads\KizhiPart1.csproj\obj\Debug\KizhiPart1.pdb
+C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\nunit.framework.dll
+C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\nunit.framework.pdb
+C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\nunit.framework.xml
+C:\Users\Дима\Downloads\KizhiPart1.csproj\obj\Debug\KizhiPart1.csprojAssemblyReference.cache
+C:\Users\Дима\Downloads\KizhiPart1.csproj\obj\Debug\KizhiPart1.csproj.CopyComplete
