@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,8 +8,6 @@ namespace KizhiPart1
     {
         private readonly CommandExecutor _commandExecutor;
 
-        private bool _isPreviousCommandExecuted = true;
-
         public Interpreter(TextWriter writer)
         {
             _commandExecutor = new CommandExecutor(writer);
@@ -16,11 +15,11 @@ namespace KizhiPart1
 
         public void ExecuteLine(string command)
         {
-            if (!_isPreviousCommandExecuted) return;
+            if (!_commandExecutor.IsPreviousCommandExecuted) return;
 
             var commandParts = command.Split(' ');
             var commandForExecute = CreateCommandFromCommandParts();
-            _isPreviousCommandExecuted = _commandExecutor.TryExecute(commandForExecute);
+            _commandExecutor.Execute(commandForExecute);
 
 
             Command CreateCommandFromCommandParts()
@@ -64,60 +63,94 @@ namespace KizhiPart1
 
     internal class CommandExecutor
     {
-        private readonly TextWriter _writer;
+        public bool IsPreviousCommandExecuted { get; private set; } = true;
 
-        private readonly Dictionary<string, int> _variableNameToValue = new Dictionary<string, int>();
+        private readonly VariablesStorage _variablesStorage = new VariablesStorage();
+
+        private readonly TextWriter _writer;
 
         public CommandExecutor(TextWriter writer)
         {
             _writer = writer;
         }
 
-        public bool TryExecute(Command command)
+        public void Execute(Command command)
         {
             if (command.Name != "set" && !MemoryContainsVariableWithName(command.VariableName))
-                return false;
+            {
+                IsPreviousCommandExecuted = false;
+                return;
+            }
 
-            if (command is CommandWithValue valueCommand)
-                Execute(valueCommand);
+            if (command is CommandWithValue commandWithValue)
+                ExecuteCommandWithValue(commandWithValue);
             else
-                Execute(command);
-
-            return true;
+                ExecuteCommand(command);
         }
 
-        private bool MemoryContainsVariableWithName(string name)
+        private bool MemoryContainsVariableWithName(string variableName)
         {
-            if (_variableNameToValue.ContainsKey(name)) return true;
+            if (_variablesStorage.ContainsVariableWithName(variableName)) return true;
 
             _writer.WriteLine("Переменная отсутствует в памяти");
             return false;
         }
 
-        private void Execute(CommandWithValue valueCommand)
+        private void ExecuteCommandWithValue(CommandWithValue commandWithValue)
         {
-            switch (valueCommand.Name)
+            switch (commandWithValue.Name)
             {
                 case "set":
-                    _variableNameToValue[valueCommand.VariableName] = valueCommand.Value;
+                    _variablesStorage.SetValueOfVariableWithName(commandWithValue.VariableName, commandWithValue.Value);
                     break;
                 case "sub":
-                    _variableNameToValue[valueCommand.VariableName] -= valueCommand.Value;
+                    var currentValue = _variablesStorage.GetValueOfVariableWithName(commandWithValue.VariableName);
+                    var valueAfterSub = currentValue - commandWithValue.Value;
+                    _variablesStorage.SetValueOfVariableWithName(commandWithValue.VariableName, valueAfterSub);
                     break;
             }
         }
 
-        private void Execute(Command command)
+        private void ExecuteCommand(Command command)
         {
             switch (command.Name)
             {
                 case "rem":
-                    _variableNameToValue.Remove(command.VariableName);
+                    _variablesStorage.RemoveVariableWithName(command.VariableName);
                     break;
                 case "print":
-                    _writer.WriteLine(_variableNameToValue[command.VariableName]);
+                    var value = _variablesStorage.GetValueOfVariableWithName(command.VariableName);
+                    _writer.WriteLine(value);
                     break;
             }
+        }
+    }
+
+    internal class VariablesStorage
+    {
+        private readonly Dictionary<string, int> _variableNameToValue = new Dictionary<string, int>();
+
+        public bool ContainsVariableWithName(string variableName)
+        {
+            return _variableNameToValue.ContainsKey(variableName);
+        }
+
+        public int GetValueOfVariableWithName(string variableName)
+        {
+            return _variableNameToValue[variableName];
+        }
+
+        public int SetValueOfVariableWithName(string variableName, int value)
+        {
+            if (value <= 0)
+                throw new ArgumentException("Значениями переменных могут быть только натуральные числа");
+            
+            return _variableNameToValue[variableName] = value;
+        }
+
+        public void RemoveVariableWithName(string variableName)
+        {
+            _variableNameToValue.Remove(variableName);
         }
     }
 }

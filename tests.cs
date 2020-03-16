@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using NUnit.Framework;
 using NUnit;
 
@@ -32,13 +33,13 @@ namespace KizhiPart1
             sw.AutoFlush = true;
             var interpreter = new Interpreter(sw);
             interpreter.ExecuteLine("set m 20");
-            interpreter.ExecuteLine("sub m 20");
+            interpreter.ExecuteLine("sub m 19");
             interpreter.ExecuteLine("print m");
 
             sw.Close();
             var sr = new StreamReader(path);
             var line = sr.ReadLine();
-            Assert.AreEqual(new[] {"0"},
+            Assert.AreEqual(new[] {"1"},
                 new[] {line});
         }
 
@@ -119,6 +120,17 @@ namespace KizhiPart1
             var line2 = sr.ReadLine();
             Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
                 new[] {line, line2});
+        }
+
+        [Test]
+        public void VariableValueIsZero()
+        {
+            var path = @"testVariableValueIsZero.txt";
+            var sw = new StreamWriter(path);
+            sw.AutoFlush = true;
+            var interpreter = new Interpreter(sw);
+            Assert.Throws<ArgumentException>(() => interpreter.ExecuteLine("set m 0"));
+            sw.Close();
         }
     }
 }
