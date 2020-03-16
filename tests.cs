@@ -10,7 +10,7 @@ namespace KizhiPart1
         [Test]
         public void Set()
         {
-            var path = @"D:\testSet.txt";
+            var path = @"testSet.txt";
             var sw = new StreamWriter(path);
             sw.AutoFlush = true;
             var interpreter = new Interpreter(sw);
@@ -27,7 +27,7 @@ namespace KizhiPart1
         [Test]
         public void Sub()
         {
-            var path = @"D:\testSub.txt";
+            var path = @"testSub.txt";
             var sw = new StreamWriter(path);
             sw.AutoFlush = true;
             var interpreter = new Interpreter(sw);
@@ -45,7 +45,7 @@ namespace KizhiPart1
         [Test]
         public void SubAfterRem()
         {
-            var path = @"D:\testSubAfterRem.txt";
+            var path = @"testSubAfterRem.txt";
             var sw = new StreamWriter(path);
             sw.AutoFlush = true;
             var interpreter = new Interpreter(sw);
@@ -64,7 +64,7 @@ namespace KizhiPart1
         [Test]
         public void PrintAfterRem()
         {
-            var path = @"D:\testPrintAfterRem.txt";
+            var path = @"testPrintAfterRem.txt";
             var sw = new StreamWriter(path);
             sw.AutoFlush = true;
             var interpreter = new Interpreter(sw);
@@ -84,7 +84,7 @@ namespace KizhiPart1
         [Test]
         public void RemAfterRem()
         {
-            var path = @"D:\testRemAfterRem.txt";
+            var path = @"testRemAfterRem.txt";
             var sw = new StreamWriter(path);
             sw.AutoFlush = true;
             var interpreter = new Interpreter(sw);
@@ -104,7 +104,7 @@ namespace KizhiPart1
         [Test]
         public void DontWriteAfterNotFound()
         {
-            var path = @"D:\testDontWriteAfterNotFound.txt";
+            var path = @"testDontWriteAfterNotFound.txt";
             var sw = new StreamWriter(path);
             sw.AutoFlush = true;
             var interpreter = new Interpreter(sw);

@@ -8,3 +8,13 @@ C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\nunit.framework.pdb
 C:\Users\Дима\Downloads\KizhiPart1.csproj\bin\Debug\nunit.framework.xml
 C:\Users\Дима\Downloads\KizhiPart1.csproj\obj\Debug\KizhiPart1.csprojAssemblyReference.cache
 C:\Users\Дима\Downloads\KizhiPart1.csproj\obj\Debug\KizhiPart1.csproj.CopyComplete
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\bin\Debug\KizhiPart1.exe.config
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\bin\Debug\KizhiPart1.exe
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\bin\Debug\KizhiPart1.pdb
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\bin\Debug\nunit.framework.dll
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\bin\Debug\nunit.framework.pdb
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\bin\Debug\nunit.framework.xml
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\obj\Debug\KizhiPart1.csprojAssemblyReference.cache
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\obj\Debug\KizhiPart1.csproj.CopyComplete
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\obj\Debug\KizhiPart1.exe
+D:\Учёба\Тестовые на стажировку C# Контур\Кижи\KizhiPart1.csproj\obj\Debug\KizhiPart1.pdb
