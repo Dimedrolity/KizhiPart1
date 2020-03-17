@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
-using NUnit;
 
 namespace KizhiPart1
 {
@@ -12,8 +11,7 @@ namespace KizhiPart1
         public void Set()
         {
             var path = @"testSet.txt";
-            var sw = new StreamWriter(path);
-            sw.AutoFlush = true;
+            var sw = new StreamWriter(path) {AutoFlush = true};
             var interpreter = new Interpreter(sw);
             interpreter.ExecuteLine("set m 20");
             interpreter.ExecuteLine("print m");
@@ -21,16 +19,17 @@ namespace KizhiPart1
             sw.Close();
             var sr = new StreamReader(path);
             var line = sr.ReadLine();
-            Assert.AreEqual(new[] {"20"},
-                new[] {line});
+            var line2 = sr.ReadLine();
+
+            Assert.AreEqual(new[] {"20", null},
+                new[] {line, line2});
         }
 
         [Test]
         public void Sub()
         {
             var path = @"testSub.txt";
-            var sw = new StreamWriter(path);
-            sw.AutoFlush = true;
+            var sw = new StreamWriter(path) {AutoFlush = true};
             var interpreter = new Interpreter(sw);
             interpreter.ExecuteLine("set m 20");
             interpreter.ExecuteLine("sub m 19");
@@ -39,16 +38,17 @@ namespace KizhiPart1
             sw.Close();
             var sr = new StreamReader(path);
             var line = sr.ReadLine();
-            Assert.AreEqual(new[] {"1"},
-                new[] {line});
+            var line2 = sr.ReadLine();
+
+            Assert.AreEqual(new[] {"1", null},
+                new[] {line, line2});
         }
 
         [Test]
         public void SubAfterRem()
         {
             var path = @"testSubAfterRem.txt";
-            var sw = new StreamWriter(path);
-            sw.AutoFlush = true;
+            var sw = new StreamWriter(path) {AutoFlush = true};
             var interpreter = new Interpreter(sw);
 
             interpreter.ExecuteLine("set m 20");
@@ -58,16 +58,16 @@ namespace KizhiPart1
             sw.Close();
             var sr = new StreamReader(path);
             var line = sr.ReadLine();
-            Assert.AreEqual(new[] {"Переменная отсутствует в памяти"},
-                new[] {line});
+            var line2 = sr.ReadLine();
+            Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
+                new[] {line, line2});
         }
 
         [Test]
         public void PrintAfterRem()
         {
             var path = @"testPrintAfterRem.txt";
-            var sw = new StreamWriter(path);
-            sw.AutoFlush = true;
+            var sw = new StreamWriter(path) {AutoFlush = true};
             var interpreter = new Interpreter(sw);
 
             interpreter.ExecuteLine("set m 20");
@@ -78,16 +78,16 @@ namespace KizhiPart1
             sw.Close();
             var sr = new StreamReader(path);
             var line = sr.ReadLine();
-            Assert.AreEqual(new[] {"Переменная отсутствует в памяти"},
-                new[] {line});
+            var line2 = sr.ReadLine();
+            Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
+                new[] {line, line2});
         }
 
         [Test]
         public void RemAfterRem()
         {
             var path = @"testRemAfterRem.txt";
-            var sw = new StreamWriter(path);
-            sw.AutoFlush = true;
+            var sw = new StreamWriter(path) {AutoFlush = true};
             var interpreter = new Interpreter(sw);
 
             interpreter.ExecuteLine("set m 20");
@@ -98,16 +98,16 @@ namespace KizhiPart1
             sw.Close();
             var sr = new StreamReader(path);
             var line = sr.ReadLine();
-            Assert.AreEqual(new[] {"Переменная отсутствует в памяти"},
-                new[] {line});
+            var line2 = sr.ReadLine();
+            Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
+                new[] {line, line2});
         }
 
         [Test]
-        public void DontWriteAfterNotFound()
+        public void DontExecuteAfterNotFound()
         {
-            var path = @"testDontWriteAfterNotFound.txt";
-            var sw = new StreamWriter(path);
-            sw.AutoFlush = true;
+            var path = @"testDontExecuteAfterNotFound.txt";
+            var sw = new StreamWriter(path) {AutoFlush = true};
             var interpreter = new Interpreter(sw);
 
             interpreter.ExecuteLine("print a");
@@ -126,8 +126,7 @@ namespace KizhiPart1
         public void VariableValueIsZero()
         {
             var path = @"testVariableValueIsZero.txt";
-            var sw = new StreamWriter(path);
-            sw.AutoFlush = true;
+            var sw = new StreamWriter(path) {AutoFlush = true};
             var interpreter = new Interpreter(sw);
             Assert.Throws<ArgumentException>(() => interpreter.ExecuteLine("set m 0"));
             sw.Close();
