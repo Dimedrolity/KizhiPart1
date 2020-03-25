@@ -17,13 +17,14 @@ namespace KizhiPart1
         {
             if (!_commandExecutor.IsPreviousCommandExecuted) return;
 
-            var commandParts = command.Split(' ');
-            var commandForExecute = CreateCommandFromCommandParts();
+            var commandForExecute = CreateCommandFromString();
             _commandExecutor.Execute(commandForExecute);
 
 
-            Command CreateCommandFromCommandParts()
+            Command CreateCommandFromString()
             {
+                var commandParts = command.Split(' ');
+
                 if (commandParts.Length <= 2)
                     return new Command(commandParts[0], commandParts[1]);
 
@@ -52,8 +53,7 @@ namespace KizhiPart1
     {
         public int Value { get; }
 
-        public CommandWithValue(string name, string variableName, int value)
-            : base(name, variableName)
+        public CommandWithValue(string name, string variableName, int value) : base(name, variableName)
         {
             Value = value;
         }
@@ -144,7 +144,7 @@ namespace KizhiPart1
         {
             if (value <= 0)
                 throw new ArgumentException("Значениями переменных могут быть только натуральные числа");
-            
+
             _variableNameToValue[variableName] = value;
         }
 
