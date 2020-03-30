@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace KizhiPart1
 {
     [TestFixture]
-    public class tests
+    public class InterpreterTests
     {
         [Test]
         public void Set()
