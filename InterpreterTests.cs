@@ -1,135 +1,107 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace KizhiPart1
 {
     [TestFixture]
     public class InterpreterTests
     {
+        private readonly string[] _commandsSeparator = {"\r\n"};
+
+        void TestInterpreter(string[] commands, string[] expectedOutput)
+        {
+            string[] actualOutput;
+            using (var sw = new StringWriter())
+            {
+                var interpreter = new Interpreter(sw);
+
+                foreach (var command in commands)
+                {
+                    interpreter.ExecuteLine(command);
+                }
+
+                actualOutput = sw.ToString().Split(_commandsSeparator, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            Assert.AreEqual(expectedOutput.Length, actualOutput.Length);
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
+
         [Test]
         public void Set()
         {
-            var path = @"testSet.txt";
-            var sw = new StreamWriter(path) {AutoFlush = true};
-            var interpreter = new Interpreter(sw);
-            interpreter.ExecuteLine("set m 20");
-            interpreter.ExecuteLine("print m");
-
-            sw.Close();
-            var sr = new StreamReader(path);
-            var line = sr.ReadLine();
-            var line2 = sr.ReadLine();
-
-            Assert.AreEqual(new[] {"20", null},
-                new[] {line, line2});
+            TestInterpreter(new[]
+                {
+                    "set m 20",
+                    "print m"
+                },
+                new[] {"20"});
         }
 
         [Test]
         public void Sub()
         {
-            var path = @"testSub.txt";
-            var sw = new StreamWriter(path) {AutoFlush = true};
-            var interpreter = new Interpreter(sw);
-            interpreter.ExecuteLine("set m 20");
-            interpreter.ExecuteLine("sub m 19");
-            interpreter.ExecuteLine("print m");
-
-            sw.Close();
-            var sr = new StreamReader(path);
-            var line = sr.ReadLine();
-            var line2 = sr.ReadLine();
-
-            Assert.AreEqual(new[] {"1", null},
-                new[] {line, line2});
+            TestInterpreter(new[]
+            {
+                "set m 20", "sub m 19", "print m"
+            }, new[] {"1"});
         }
 
         [Test]
         public void SubAfterRem()
         {
-            var path = @"testSubAfterRem.txt";
-            var sw = new StreamWriter(path) {AutoFlush = true};
-            var interpreter = new Interpreter(sw);
-
-            interpreter.ExecuteLine("set m 20");
-            interpreter.ExecuteLine("rem m");
-            interpreter.ExecuteLine("sub m 20");
-
-            sw.Close();
-            var sr = new StreamReader(path);
-            var line = sr.ReadLine();
-            var line2 = sr.ReadLine();
-            Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
-                new[] {line, line2});
+            TestInterpreter(new[]
+            {
+                "set m 20",
+                "rem m",
+                "sub m 20"
+            }, new[] {"Переменная отсутствует в памяти"});
         }
 
         [Test]
         public void PrintAfterRem()
         {
-            var path = @"testPrintAfterRem.txt";
-            var sw = new StreamWriter(path) {AutoFlush = true};
-            var interpreter = new Interpreter(sw);
-
-            interpreter.ExecuteLine("set m 20");
-            interpreter.ExecuteLine("rem m");
-            interpreter.ExecuteLine("print m");
-
-
-            sw.Close();
-            var sr = new StreamReader(path);
-            var line = sr.ReadLine();
-            var line2 = sr.ReadLine();
-            Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
-                new[] {line, line2});
+            TestInterpreter(new[]
+            {
+                "set m 20",
+                "rem m",
+                "print m"
+            }, new[] {"Переменная отсутствует в памяти"});
         }
 
         [Test]
         public void RemAfterRem()
         {
-            var path = @"testRemAfterRem.txt";
-            var sw = new StreamWriter(path) {AutoFlush = true};
-            var interpreter = new Interpreter(sw);
-
-            interpreter.ExecuteLine("set m 20");
-            interpreter.ExecuteLine("rem m");
-            interpreter.ExecuteLine("rem m");
-
-
-            sw.Close();
-            var sr = new StreamReader(path);
-            var line = sr.ReadLine();
-            var line2 = sr.ReadLine();
-            Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
-                new[] {line, line2});
+            TestInterpreter(new[]
+            {
+                "set m 20",
+                "rem m",
+                "rem m"
+            }, new[] {"Переменная отсутствует в памяти"});
         }
 
         [Test]
         public void DontExecuteAfterNotFound()
         {
-            var path = @"testDontExecuteAfterNotFound.txt";
-            var sw = new StreamWriter(path) {AutoFlush = true};
-            var interpreter = new Interpreter(sw);
-
-            interpreter.ExecuteLine("print a");
-            interpreter.ExecuteLine("set a 5");
-            interpreter.ExecuteLine("print a");
-
-            sw.Close();
-            var sr = new StreamReader(path);
-            var line = sr.ReadLine();
-            var line2 = sr.ReadLine();
-            Assert.AreEqual(new[] {"Переменная отсутствует в памяти", null},
-                new[] {line, line2});
+            TestInterpreter(new[]
+            {
+                "print a",
+                "set a 5",
+                "print a"
+            }, new[] {"Переменная отсутствует в памяти"});
         }
 
         [Test]
         public void VariableValueIsZero()
         {
-            var path = @"testVariableValueIsZero.txt";
-            var sw = new StreamWriter(path) {AutoFlush = true};
-            var interpreter = new Interpreter(sw);
-            Assert.Throws<ArgumentException>(() => interpreter.ExecuteLine("set m 0"));
-            sw.Close();
+            using (var sw = new StringWriter())
+            {
+                var interpreter = new Interpreter(sw);
+
+                Assert.Throws<ArgumentException>(() => interpreter.ExecuteLine("set m 0"));
+            }
         }
     }
 }
