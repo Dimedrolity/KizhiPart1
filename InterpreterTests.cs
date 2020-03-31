@@ -96,12 +96,9 @@ namespace KizhiPart1
         [Test]
         public void VariableValueIsZero()
         {
-            using (var sw = new StringWriter())
-            {
-                var interpreter = new Interpreter(sw);
-
-                Assert.Throws<ArgumentException>(() => interpreter.ExecuteLine("set m 0"));
-            }
+            Assert.Throws<ArgumentException>(() =>
+                TestInterpreter(new[] {"set m 0"}, new string[0])
+            );
         }
     }
 }
