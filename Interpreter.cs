@@ -143,7 +143,9 @@ namespace KizhiPart1
         public void SetValueOfVariableWithName(string variableName, int value)
         {
             if (value <= 0)
-                throw new ArgumentException("Значениями переменных могут быть только натуральные числа");
+                throw new ArgumentException(
+                    $"Попытка присвоить в переменную '{variableName}' значение '{value}'.\n" +
+                    "Значениями переменных могут быть только натуральные числа");
 
             _variableNameToValue[variableName] = value;
         }
